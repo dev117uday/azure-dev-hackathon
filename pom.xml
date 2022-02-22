@@ -7,11 +7,17 @@
     <groupId>com.backend</groupId>
     <artifactId>urlink-microservice</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
+    <modules>
+        <module>collection-service</module>
+        <module>link-service</module>
+        <module>user-service</module>
+        <module>shared</module>
+    </modules>
 
 </project>
