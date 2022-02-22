@@ -3,3 +3,7 @@
 *.properties
 
 shared/target/
+
+*.iml
+
+*.yml
