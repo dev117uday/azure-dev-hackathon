@@ -1,20 +1,16 @@
 package models;
 
 import lombok.*;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.List;
-import java.util.Objects;
 
-@Getter
-@Setter
-@RequiredArgsConstructor
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "tbl_url_collections", indexes = @Index(columnList = "user_id", name = "fk_idx_user_id"))
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class UrlCollections {
 
@@ -45,19 +41,7 @@ public class UrlCollections {
             mappedBy = "collection",
             fetch = FetchType.LAZY
     )
+    @ToString.Exclude
     private List<Links> linksList;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        UrlCollections that = (UrlCollections) o;
-        return collectionId != null && Objects.equals(collectionId, that.collectionId);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }
 

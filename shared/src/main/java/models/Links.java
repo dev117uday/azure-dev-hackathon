@@ -1,18 +1,14 @@
 package models;
 
 import lombok.*;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.Objects;
 
-@Getter
-@Setter
-@RequiredArgsConstructor
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "tbl_links")
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Links {
 
@@ -31,18 +27,7 @@ public class Links {
             name = "collection_id",
             referencedColumnName = "collectionId"
     )
+    @ToString.Exclude
     private UrlCollections collection;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Links links = (Links) o;
-        return linkId != null && Objects.equals(linkId, links.linkId);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

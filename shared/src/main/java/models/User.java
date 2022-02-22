@@ -1,18 +1,13 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
-import java.util.Objects;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -38,23 +33,11 @@ public class User {
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
+    @ToString.Exclude
     private List<UrlCollections> collections;
 
     public User(String userEmail, String userName) {
         this.userEmail = userEmail;
         this.userName = userName;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        User user = (User) o;
-        return userId != null && Objects.equals(userId, user.userId);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
     }
 }
