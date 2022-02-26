@@ -1,12 +1,13 @@
 package com.backend.collectionservice.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
 import com.backend.collectionservice.repository.CollectionRepository;
-import dto.CollectionDTO;
-import dto.UserCollectionDTO;
-import dto.UserDTO;
-import exception.RestException;
-import models.UrlCollections;
-import models.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -14,10 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import dto.CollectionDTO;
+import dto.UserCollectionDTO;
+import dto.UserDTO;
+import exception.RestException;
+import models.UrlCollections;
 
 @Service
 public class CollectionService {

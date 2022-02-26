@@ -1,13 +1,11 @@
 package com.backend.linkservice.service;
 
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
 import com.backend.linkservice.repository.LinkRepository;
-import dto.CollectionDTO;
-import dto.CollectionLinkDTO;
-import dto.LinkDTO;
-import dto.UserDTO;
-import exception.RestException;
-import models.Links;
-import models.UrlCollections;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -15,8 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import javax.transaction.Transactional;
-import java.util.Optional;
+import dto.CollectionDTO;
+import dto.CollectionLinkDTO;
+import dto.LinkDTO;
+import exception.RestException;
+import models.Links;
 
 @Service
 public class LinkService {
