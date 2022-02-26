@@ -55,7 +55,7 @@ public class CollectionService {
     public CollectionDTO saveCollectionService(CollectionDTO collection) throws RestException {
 
         try {
-            var userDTO = restTemplate.getForObject("http://USER-SERVICE/api/v1/user/"+collection.getUserId(), UserDTO.class);
+            restTemplate.getForObject("http://USER-SERVICE/api/v1/user/"+collection.getUserId(), UserDTO.class);
         } catch (RestClientException e) {
             throw new RestException("user not found", HttpStatus.BAD_REQUEST);
         }
