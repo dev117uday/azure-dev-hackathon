@@ -1,9 +1,7 @@
 
 .idea/
 *.properties
-
 shared/target/
-
 *.iml
-
 *.yml
+.vscode/
