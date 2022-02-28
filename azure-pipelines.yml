@@ -1,5 +1,5 @@
 jobs:
-  - job: ${{ parameters.jobName }}
+  - job: 1
     pool:
       vmImage: ubuntu-latest
     container: maven:3.8.1-openjdk-17-slim
@@ -9,7 +9,7 @@ jobs:
     steps:
       - template: steps-prepare-maven.yml
       - task: Maven@3
-        displayName: build ${{ parameters.moduleName }} uberJar 
+        displayName: 'java install' 
         inputs:
           mavenPomFile: pom.xml
           mavenOptions: -Xmx3072m $(MavenOpts)
