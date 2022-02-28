@@ -15,11 +15,52 @@ steps:
     versionSpec: '17'
     jdkArchitectureOption: 'x86'
     jdkSourceOption: 'PreInstalled'
+
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
+    options: '-DskipTests'
     publishJUnitResults: false
     javaHomeOption: 'JDKVersion'
     mavenVersionOption: 'Default'
-    options: 'compile'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
+
+- task: AzureSpringCloud@0
+  inputs:
+    azureSubscription: 'Free Trial(0a2e0152-0d3f-4878-b925-014f650a7cb7)'
+    Action: 'Deploy'
+    AzureSpringCloud: '/subscriptions/0a2e0152-0d3f-4878-b925-014f650a7cb7/resourceGroups/spring_cloud/providers/Microsoft.AppPlatform/Spring/azure-dev-hackathon'
+    AppName: 'user-service'
+    UseStagingDeployment: true
+    Package: '$(System.DefaultWorkingDirectory)/**/user-service/**/*.jar'
+
+- task: AzureSpringCloud@0
+  inputs:
+    azureSubscription: 'Free Trial(0a2e0152-0d3f-4878-b925-014f650a7cb7)'
+    Action: 'Deploy'
+    AzureSpringCloud: '/subscriptions/0a2e0152-0d3f-4878-b925-014f650a7cb7/resourceGroups/spring_cloud/providers/Microsoft.AppPlatform/Spring/azure-dev-hackathon'
+    AppName: 'collection-service'
+    UseStagingDeployment: true
+    Package: '$(System.DefaultWorkingDirectory)/**/collection-service/**/*.jar'
+
+- task: AzureSpringCloud@0
+  inputs:
+    azureSubscription: 'Free Trial(0a2e0152-0d3f-4878-b925-014f650a7cb7)'
+    Action: 'Deploy'
+    AzureSpringCloud: '/subscriptions/0a2e0152-0d3f-4878-b925-014f650a7cb7/resourceGroups/spring_cloud/providers/Microsoft.AppPlatform/Spring/azure-dev-hackathon'
+    AppName: 'link-service'
+    UseStagingDeployment: true
+    Package: '$(System.DefaultWorkingDirectory)/**/link-service/**/*.jar'
+
+- task: AzureSpringCloud@0
+  inputs:
+    azureSubscription: 'Free Trial(0a2e0152-0d3f-4878-b925-014f650a7cb7)'
+    Action: 'Deploy'
+    AzureSpringCloud: '/subscriptions/0a2e0152-0d3f-4878-b925-014f650a7cb7/resourceGroups/spring_cloud/providers/Microsoft.AppPlatform/Spring/azure-dev-hackathon'
+    AppName: 'cloud-gateway'
+    UseStagingDeployment: true
+    Package: '$(System.DefaultWorkingDirectory)/**/cloud-gateway/**/*.jar'
+
 
