@@ -8,6 +8,8 @@ import javax.transaction.Transactional;
 
 import com.backend.collectionservice.repository.CollectionRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,7 @@ public class CollectionService {
 
     private final CollectionRepository collectionRepository;
     private final RestTemplate restTemplate;
+    private final Logger logger = LoggerFactory.getLogger(CollectionService.class);
 
     @Autowired
     public CollectionService(CollectionRepository collectionRepository, RestTemplate restTemplate) {
@@ -47,6 +50,7 @@ public class CollectionService {
         Optional<UrlCollections> collectionOp = collectionRepository.findById(collectionId);
 
         if (collectionOp.isEmpty()) {
+            logger.warn("collection not found :: getCollectionByIdService");
             throw new RestException("collection not found", HttpStatus.NOT_FOUND);
         }
         return CollectionDTO.collectionToCollectionDTO(collectionOp.get());
@@ -57,6 +61,7 @@ public class CollectionService {
         try {
             restTemplate.getForObject("http://USER-SERVICE/api/v1/user/"+collection.getUserId(), UserDTO.class);
         } catch (RestClientException e) {
+            logger.warn("user not found in :: saveCollectionService");
             throw new RestException("user not found", HttpStatus.BAD_REQUEST);
         }
 
@@ -71,6 +76,7 @@ public class CollectionService {
         Optional<UrlCollections> collectionOp = collectionRepository.findById(collectionId);
 
         if (collectionOp.isEmpty()) {
+            logger.warn("collection not found in :: updateCollectionService");
             throw new RestException("collection not found", HttpStatus.NOT_FOUND);
         }
 
@@ -88,6 +94,7 @@ public class CollectionService {
         try {
             collectionRepository.deleteById(collectionId);
         } catch (EmptyResultDataAccessException e) {
+            logger.warn("collection not found :: deleteCollectionService");
             throw new RestException("collection not found", HttpStatus.NOT_FOUND);
         }
     }
@@ -96,6 +103,7 @@ public class CollectionService {
     public UserCollectionDTO getCollectionWUserService(Long collectionId) throws RestException {
         Optional<UrlCollections> collectionOp = collectionRepository.findById(collectionId);
         if (collectionOp.isEmpty()) {
+            logger.warn("collection not found :: getCollectionWUserService");
             throw new RestException("collection not found", HttpStatus.NOT_FOUND);
         }
         UserCollectionDTO dto = new UserCollectionDTO();

@@ -6,6 +6,8 @@ import javax.transaction.Transactional;
 
 import com.backend.linkservice.repository.LinkRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,7 @@ public class LinkService {
 
     private final LinkRepository linkRepository;
     private final RestTemplate restTemplate;
+    private final Logger logger = LoggerFactory.getLogger(LinkService.class);
 
     @Autowired
     public LinkService(LinkRepository linkRepository, RestTemplate restTemplate) {
@@ -34,7 +37,8 @@ public class LinkService {
     public LinkDTO getLinkService(Long linkId) throws RestException {
         Optional<Links> linkOp = linkRepository.findById(linkId);
         if (linkOp.isEmpty()) {
-            throw new RestException("link not found", HttpStatus.NOT_FOUND);
+            logger.warn("link not found");
+            throw new RestException("link not found :: getLinkService", HttpStatus.NOT_FOUND);
         }
         return LinkDTO.linksTolinkDTO(linkOp.get());
     }
@@ -44,6 +48,7 @@ public class LinkService {
         try {
             var collectionDTO = restTemplate.getForObject("http://COLLECTION-SERVICE/api/v1/collection/" + linkDTO.getCollectionId(), CollectionDTO.class);
             if (collectionDTO == null) {
+                logger.warn("requested collection not found :: saveLinkService");
                 throw new RestException("collection not found", HttpStatus.BAD_REQUEST);
             }
             var linkTOSave = LinkDTO.linkDtoToLink(linkDTO);
@@ -51,10 +56,12 @@ public class LinkService {
             return LinkDTO.linksTolinkDTO(savedLink);
 
         } catch (IllegalArgumentException e) {
+            logger.warn("link not found in database :: saveLinkService");
             throw new RestException("link object cannot be null", HttpStatus.BAD_REQUEST);
         } catch (RestClientException e) {
             throw new RestException("collection not found", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
+            logger.warn("internal server error :: saveLinkService");
             throw new RestException("internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -65,6 +72,7 @@ public class LinkService {
         Optional<Links> linkOp = linkRepository.findById(linkId);
 
         if (linkOp.isEmpty()) {
+            logger.warn("link not found :: updateLinkService");
             throw new RestException("link not found", HttpStatus.NOT_FOUND);
         }
 
@@ -84,6 +92,7 @@ public class LinkService {
         try {
             linkRepository.deleteById(linkId);
         } catch (EmptyResultDataAccessException e) {
+            logger.warn("link not found :: deleteLinkService");
             throw new RestException("link not found", HttpStatus.NOT_FOUND);
         }
     }
@@ -92,6 +101,7 @@ public class LinkService {
     public CollectionLinkDTO getLinkWCollection(Long linkId) throws RestException {
         Optional<Links> linkOp = linkRepository.findById(linkId);
         if (linkOp.isEmpty()) {
+            logger.warn("link not found :: getLinkWCollection");
             throw new RestException("link not found", HttpStatus.NOT_FOUND);
         }
         var link = linkOp.get();

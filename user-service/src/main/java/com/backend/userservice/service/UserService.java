@@ -4,6 +4,8 @@ import com.backend.userservice.repository.UserRepository;
 import dto.UserDTO;
 import exception.RestException;
 import models.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,8 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final Logger logger = LoggerFactory.getLogger(UserService.class);
+
 
     @Autowired
     public UserService(UserRepository userRepository) {
@@ -26,6 +30,7 @@ public class UserService {
 
         Optional<User> userOp = userRepository.findById(userId);
         if (userOp.isEmpty()) {
+            logger.warn("user not found with id : "+ userId + " :: getUserByIdService");
             throw new RestException("user not found", HttpStatus.NOT_FOUND);
         }
         return UserDTO.userToUserDTO(userOp.get());
@@ -37,8 +42,10 @@ public class UserService {
             var savedUser = userRepository.save(user);
             return UserDTO.userToUserDTO(savedUser);
         } catch (IllegalArgumentException e) {
+            logger.warn("user object cannot be null :: saveUserService");
             throw new RestException("user object cannot be null", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
+            logger.error("internal server error :: saveUserService :: "+ e.getMessage());
             throw new RestException("internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -48,6 +55,7 @@ public class UserService {
 
         Optional<User> userOp = userRepository.findById(userId);
         if (userOp.isEmpty()) {
+            logger.warn("user not found :: updateUserByIdService");
             throw new RestException("user not found", HttpStatus.NOT_FOUND);
         }
 
@@ -63,6 +71,7 @@ public class UserService {
         try {
             userRepository.deleteById(userId);
         } catch (EmptyResultDataAccessException e) {
+            logger.warn("user not found :: updateUserByIdService");
             throw new RestException("user not found", HttpStatus.NOT_FOUND);
         }
     }
