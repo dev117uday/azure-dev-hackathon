@@ -12,6 +12,7 @@ pool:
 steps:
 
 - task: Maven@3
+  displayName: 'mavenbuild'
   inputs:
     mavenPomFile: 'pom.xml'
     options: '-DskipTests'
@@ -23,6 +24,18 @@ steps:
     sonarQubeRunAnalysis: false
 
 - task: AzureSpringCloud@0
+  displayName: 'cloudgateway'
+  inputs:
+    azureSubscription: 'Free Trial(0a2e0152-0d3f-4878-b925-014f650a7cb7)'
+    Action: 'Deploy'
+    AzureSpringCloud: '/subscriptions/0a2e0152-0d3f-4878-b925-014f650a7cb7/resourceGroups/spring_cloud/providers/Microsoft.AppPlatform/Spring/azure-dev-hackathon'
+    AppName: 'cloud-gateway'
+    UseStagingDeployment: false
+    DeploymentName: 'default'
+    Package: '$(System.DefaultWorkingDirectory)/**/cloud-gateway/**/*.jar'
+
+- task: AzureSpringCloud@0
+  displayName: 'userservice'
   inputs:
     azureSubscription: 'Free Trial(0a2e0152-0d3f-4878-b925-014f650a7cb7)'
     Action: 'Deploy'
@@ -33,6 +46,7 @@ steps:
     Package: '$(System.DefaultWorkingDirectory)/**/user-service/**/*.jar'
 
 - task: AzureSpringCloud@0
+  displayName: 'collectionservice'
   inputs:
     azureSubscription: 'Free Trial(0a2e0152-0d3f-4878-b925-014f650a7cb7)'
     Action: 'Deploy'
@@ -43,6 +57,7 @@ steps:
     Package: '$(System.DefaultWorkingDirectory)/**/collection-service/**/*.jar'
 
 - task: AzureSpringCloud@0
+  displayName: 'linkservice'
   inputs:
     azureSubscription: 'Free Trial(0a2e0152-0d3f-4878-b925-014f650a7cb7)'
     Action: 'Deploy'
@@ -51,15 +66,4 @@ steps:
     UseStagingDeployment: false
     DeploymentName: 'default'
     Package: '$(System.DefaultWorkingDirectory)/**/link-service/**/*.jar'
-
-- task: AzureSpringCloud@0
-  inputs:
-    azureSubscription: 'Free Trial(0a2e0152-0d3f-4878-b925-014f650a7cb7)'
-    Action: 'Deploy'
-    AzureSpringCloud: '/subscriptions/0a2e0152-0d3f-4878-b925-014f650a7cb7/resourceGroups/spring_cloud/providers/Microsoft.AppPlatform/Spring/azure-dev-hackathon'
-    AppName: 'cloud-gateway'
-    UseStagingDeployment: false
-    DeploymentName: 'default'
-    Package: '$(System.DefaultWorkingDirectory)/**/cloud-gateway/**/*.jar'
-
 
