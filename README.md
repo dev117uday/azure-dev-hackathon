@@ -4,6 +4,9 @@
 
 ### Project Urlink
 
+- Check setup.md for setup details
+- **Cloud Gateway is broken**
+
 #### Product Overview
 
 Surfing the internet, we come across resources that we might need for later use or maybe store them for a current project we are working on. This is where project Urlink comes in. It helps the user create multiple collections which can store multiple URLs with description for later access.
