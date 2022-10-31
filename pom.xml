@@ -15,7 +15,7 @@
     <modules>
 
         <module>shared</module>
-        <module>cloud-gateway</module>
+        <!-- <module>cloud-gateway</module> -->
         <module>user-service</module>
         <module>collection-service</module>
         <module>link-service</module>
